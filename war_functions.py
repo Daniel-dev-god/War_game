@@ -1,4 +1,5 @@
 from war_classes import Deck, Player, Card
+from war_constants import war_on
 
 
 def compare_cards(card1: [Card], card2: [Card]):
@@ -24,6 +25,22 @@ def check_if_winner(player1: Player, player2: Player) -> str or None:
     else:
         return None
 
+def check_if_war(cards_on_table: list, war_on: bool = False):
+    if not war_on:
+        if compare_cards(cards_on_table[0](), cards_on_table[1]()) == 'Player 1':
+            player1.take_cards(emp_list)
+        elif compare_cards(cards_on_table[0](), cards_on_table[1]()) == 'Player 2':
+            player2.take_cards(emp_list)
+        elif compare_cards(cards_on_table[0](), cards_on_table[1]()) is None:
+            war_on = True
+            return war_on
+    if war_on:
+        if compare_cards(cards_on_table[-2](), cards_on_table[-1]()) == 'Player 1':
+            player1.take_cards(emp_list)
+        elif compare_cards(cards_on_table[0](), cards_on_table[1]()) == 'Player 2':
+            player2.take_cards(emp_list)
+
+
 
 game_on = True
 deck1 = Deck().split_deck2()
@@ -34,6 +51,14 @@ poppers = player1.remove_card()
 emp_list = [poppers]
 
 while game_on:
-    cards_on_table = []
+    check_if_winner(player1, player2)
+    cards_on_table = [player1.remove_card, player2.remove_card]
+    check_if_war(cards_on_table)
+
+
+    while war_on:
+        cards_on_table.extend([player1.remove_card, player2.remove_card])
+
+
     
     
