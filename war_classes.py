@@ -44,10 +44,10 @@ class Deck:
         split_deck = {}
 
         for card in self.card[:26]:
-            player1_deck['player1'].append(str(card))   
+            player1_deck['player1'].append(card)
 
         for card in self.card[26:]:
-            player2_deck['player2'].append(str(card))   
+            player2_deck['player2'].append(card)
         split_deck['player1'] = player1_deck['player1']
         split_deck['player2'] = player2_deck['player2']
 
@@ -66,7 +66,7 @@ class Player:
     def take_cards(self, cards: list):
         self.player_deck.extend(cards)
 
-    def remove_card(self):
+    def remove_card(self)-> Card:
         if self.player_deck:
             return self.player_deck.pop(0)
 

@@ -2,7 +2,7 @@ from war_classes import Deck, Player, Card
 from war_constants import war_on
 
 
-def compare_cards(card1: [Card], card2: [Card]):
+def compare_cards(card1: Card, card2: Card):
     if card1.value == card2.value:
         return 'Tie'
     elif card1.value > card2.value:
@@ -25,21 +25,29 @@ def check_if_winner(player1: Player, player2: Player) -> str or None:
     else:
         return None
 
+
 def check_if_war(cards_on_table: list, war_on: bool = False):
     if not war_on:
-        if compare_cards(cards_on_table[0](), cards_on_table[1]()) == 'Player 1':
-            player1.take_cards(emp_list)
-        elif compare_cards(cards_on_table[0](), cards_on_table[1]()) == 'Player 2':
-            player2.take_cards(emp_list)
-        elif compare_cards(cards_on_table[0](), cards_on_table[1]()) is None:
-            war_on = True
-            return war_on
-    if war_on:
-        if compare_cards(cards_on_table[-2](), cards_on_table[-1]()) == 'Player 1':
-            player1.take_cards(emp_list)
-        elif compare_cards(cards_on_table[0](), cards_on_table[1]()) == 'Player 2':
-            player2.take_cards(emp_list)
+        # Actually call remove_card() to get the card objects
+        card1 = cards_on_table[0]()
+        card2 = cards_on_table[1]()
 
+        if compare_cards(card1, card2) == 'Player 1':
+            player1.take_cards(emp_list)
+        elif compare_cards(card1, card2) == 'Player 2':
+            player2.take_cards(emp_list)
+        elif compare_cards(card1, card2) == "Tie":
+            war_on = True
+
+    if war_on:
+        # Similar correction for war scenario
+        card1 = cards_on_table[-2]()
+        card2 = cards_on_table[-1]()
+
+        if compare_cards(card1, card2) == 'Player 1':
+            player1.take_cards(emp_list)
+        elif compare_cards(card1, card2) == 'Player 2':
+            player2.take_cards(emp_list)
 
 
 game_on = True
@@ -50,14 +58,34 @@ player2 = Player(deck1, 'player2')
 poppers = player1.remove_card()
 emp_list = [poppers]
 
+# In the main game loop
 while game_on:
     check_if_winner(player1, player2)
-    cards_on_table = [player1.remove_card, player2.remove_card]
+    # Correctly pass method references
+    print(player1.remove_card(), player2.remove_card())
+    player1_card = player1.remove_card()
+    player2_card = player2.remove_card()
+    cards_on_table = [player1_card, player2_card]
     check_if_war(cards_on_table)
 
-
     while war_on:
-        cards_on_table.extend([player1.remove_card, player2.remove_card])
+        player1_card = player1.remove_card()
+        player2_card = player2.remove_card()
+        cards_on_table.extend([player1_card, player2_card])
+        check_if_war(cards_on_table)
+
+
+
+# while game_on:
+#     check_if_winner(player1, player2)
+#     # logic here to handle what above code returns, otherwise broken winner checker
+#
+#     cards_on_table = [player1.remove_card, player2.remove_card]
+#     check_if_war(cards_on_table)
+#
+#
+#     while war_on:
+#         cards_on_table.extend([player1.remove_card, player2.remove_card])
 
 
     
