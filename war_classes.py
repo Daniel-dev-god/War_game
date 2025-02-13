@@ -23,7 +23,7 @@ class Deck:
                 self.card.append(Card(suit, rank))
 
 
-    def shuffle(self):
+    def shuffle_deck(self):
         random.shuffle(self.card)
 
 
@@ -38,7 +38,7 @@ class Deck:
     #         'player2': [str(card) for card in self.card[26:]]
     #     }
     def split_deck2(self):
-        self.shuffle()
+        self.shuffle_deck()
         player1_deck = {'player1': []}
         player2_deck = {'player2': []}
         split_deck = {}
@@ -66,9 +66,12 @@ class Player:
     def take_cards(self, cards: list):
         self.player_deck.extend(cards)
 
-    def remove_card(self)-> Card:
+    def remove_card(self):
         if self.player_deck:
             return self.player_deck.pop(0)
+
+    def shuffle_hand(self):
+        random.shuffle(self.player_deck)
 
     def __str__(self):
         return f'{self.player_input} has: {len(self.player_deck)} cards left.'
