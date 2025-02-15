@@ -4,6 +4,15 @@ from war_constants import suits, ranks, values
 
 
 class Card:
+    """
+    Represents a playing card with a suit, rank, and value.
+    
+    Attributes:
+        suit (str): The suit of the card, e.g., 'Hearts', 'Diamonds', etc.
+        rank (str): The rank of the card, e.g., 'Two', 'King', etc.
+        value (int): The numerical value assigned to the card's rank (from values dictionary).
+    """
+
     def __init__(self, suit: str, rank: str):
         self.suit = suit
         self.rank = rank
@@ -14,18 +23,29 @@ class Card:
 
 
 class Deck:
+    """
+    Represents a standard deck of playing cards.
+    
+    Attributes:
+        cards (list[Card]): A list of Card objects representing the deck.
+    """
 
     def __init__(self):
+        """
+        Initializes a new deck of cards with all possible combinations
+        of suits and ranks.
+        """
         # self.cards = [Card(suit, rank) for suit in suits for rank in ranks]
         self.card = []
         for suit in suits:
             for rank in ranks:
                 self.card.append(Card(suit, rank))
 
-
     def shuffle_deck(self):
+        """
+        Shuffles the cards in the deck in a random order.
+        """
         random.shuffle(self.card)
-
 
     # def split_deck1(self)->dict:
     #     """
@@ -38,6 +58,13 @@ class Deck:
     #         'player2': [str(card) for card in self.card[26:]]
     #     }
     def split_deck2(self):
+        """
+        Shuffles the deck and splits it into two equal parts for two players.
+        
+        Returns:
+            dict: A dictionary with keys 'player1' and 'player2', 
+                  each containing a list of 26 Card objects.
+        """
         self.shuffle_deck()
         player1_deck = {'player1': []}
         player2_deck = {'player2': []}
@@ -53,11 +80,17 @@ class Deck:
 
         return split_deck
 
-    def deal_one(self):
-        return self.card.pop()
-
 
 class Player:
+    """
+    Represents a player in the card game, holding their deck of cards.
+
+    Attributes:
+        deck_cards (dict): A dictionary containing both players' cards.
+        player_input (str): The name of the player, used as the key in deck_cards.
+        player_deck (list[Card]): A list of Card objects representing the player's deck.
+    """
+
     def __init__(self, deck_cards: dict, player_input: str):
         self.deck_cards = deck_cards
         self.player_input = player_input
